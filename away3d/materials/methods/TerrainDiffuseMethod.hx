@@ -28,7 +28,7 @@ class TerrainDiffuseMethod extends BasicDiffuseMethod {
 	 */
     public function new(splatTextures:Array<Dynamic>, blendingTexture:Texture2DBase, tileData:Array<Dynamic>) {
         super();
-        _splats = Vector.ofArray(cast splatTextures);
+        _splats = splatTextures;
         _tileData = tileData;
         _blendingTexture = blendingTexture;
         _numSplattingLayers = _splats.length;
@@ -83,7 +83,7 @@ class TerrainDiffuseMethod extends BasicDiffuseMethod {
         code += getTex2DSampleCode(vo, blendValues, blendTexReg, _blendingTexture, uvReg, "clamp");
         var splatTexReg:ShaderRegisterElement;
         vo.fragmentConstantsIndex = scaleRegister.index * 4;
-        var comps:Array<String> = Vector.ofArray(cast [".x", ".y", ".z", ".w"]);
+        var comps:Array<String> = [ ".x", ".y", ".z", ".w" ];
         var i:Int = 0;
         while (i < _numSplattingLayers) {
             var scaleRegName:String = i < (3) ? scaleRegister + comps[i + 1] : scaleRegister2 + comps[i - 3];

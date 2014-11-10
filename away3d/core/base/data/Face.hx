@@ -51,9 +51,9 @@ class Face {
 	 */
     public function new(vertices:Array<Float> = null, uvs:Array<Float> = null) {
         _vertices = vertices ;
-        if (_vertices == null)_vertices = Vector.ofArray(cast [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+        if (_vertices == null)_vertices = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
         _uvs = uvs;
-        if (_uvs == null)_uvs = Vector.ofArray(cast [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+        if (_uvs == null)_uvs = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     }
 
 //uvs
@@ -244,7 +244,7 @@ class Face {
 	 * @return Returns a Vector.<Number> representing the v0 stored in the Face value object
 	 */
     public function get_v0():Array<Float> {
-        return Vector.ofArray(cast [_vertices[0], _vertices[1], _vertices[2]]);
+        return [_vertices[0], _vertices[1], _vertices[2]];
     }
 
     /**
@@ -289,7 +289,7 @@ class Face {
 	 * @return Returns a Vector.<Number> representing the v1 stored in the Face value object
 	 */
     public function get_v1():Array<Float> {
-        return Vector.ofArray(cast [_vertices[3], _vertices[4], _vertices[5]]);
+        return [_vertices[3], _vertices[4], _vertices[5]];
     }
 
     /**
@@ -334,7 +334,7 @@ class Face {
 	 * @return Returns a Vector.<Number> representing the v2 stored in the Face value object
 	 */
     public function get_v2():Array<Float> {
-        return Vector.ofArray(cast [_vertices[6], _vertices[7], _vertices[8]]);
+        return [_vertices[6], _vertices[7], _vertices[8]];
     }
 
     /**
@@ -362,8 +362,8 @@ class Face {
 	 * returns a new Face value Object
 	 */
     public function clone():Face {
-        var nVertices:Array<Float> = Vector.ofArray(cast [_vertices[0], _vertices[1], _vertices[2], _vertices[3], _vertices[4], _vertices[5], _vertices[6], _vertices[7], _vertices[8]]);
-        var nUvs:Array<Float> = Vector.ofArray(cast [_uvs[0], _uvs[1], _uvs[2], _uvs[3], _uvs[4], _uvs[5]]);
+        var nVertices:Array<Float> = [_vertices[0], _vertices[1], _vertices[2], _vertices[3], _vertices[4], _vertices[5], _vertices[6], _vertices[7], _vertices[8]];
+        var nUvs:Array<Float> = [_uvs[0], _uvs[1], _uvs[2], _uvs[3], _uvs[4], _uvs[5]];
         return new Face(nVertices, nUvs);
     }
 

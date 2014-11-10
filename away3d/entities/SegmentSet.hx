@@ -327,7 +327,7 @@ class SegmentSet extends Entity implements IRenderable {
     public function getIndexBuffer(stage3DProxy:Stage3DProxy):IndexBuffer3D {
         if (_activeSubSet.indexContext3D != stage3DProxy.context3D || _activeSubSet.indexBufferDirty) {
             _activeSubSet.indexBuffer = stage3DProxy._context3D.createIndexBuffer(_activeSubSet.numIndices);
-            _activeSubSet.indexBuffer.uploadFromVector(Vector.ofArray(_activeSubSet.indices), 0, _activeSubSet.numIndices);
+            _activeSubSet.indexBuffer.uploadFromVector(_activeSubSet.indices, 0, _activeSubSet.numIndices);
             _activeSubSet.indexBufferDirty = false;
             _activeSubSet.indexContext3D = stage3DProxy.context3D;
         }

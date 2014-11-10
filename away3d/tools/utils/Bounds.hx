@@ -59,7 +59,7 @@ class Bounds {
             return;
         }
         if (worldBased) {
-            var b:Array<Float> = Vector.ofArray(cast [Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY, Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY]);
+            var b:Array<Float> = [ Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY, Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY ];
             var c:Array<Float> = getBoundsCorners(_minX, _minY, _minZ, _maxX, _maxY, _maxZ);
             transformContainer(b, c, container.sceneTransform);
             _minX = b[0];
@@ -197,8 +197,8 @@ class Bounds {
     static private function parseObjectContainerBounds(obj:ObjectContainer3D, parentTransform:Matrix3D = null):Void {
         if (!obj.visible) return;
         if (!_containers.exists(obj))
-            _containers.set(obj, Vector.ofArray([Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY,
-            Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY]));
+            _containers.set(obj, [ Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY, Math.POSITIVE_INFINITY,
+            Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY ]);
         var containerBounds:Array<Float> = _containers.get(obj);
         var child:ObjectContainer3D;
         var isEntity:Entity = cast(obj, Entity);
@@ -273,7 +273,7 @@ class Bounds {
     }
 
     static private function getBoundsCorners(minX:Float, minY:Float, minZ:Float, maxX:Float, maxY:Float, maxZ:Float):Array<Float> {
-        return Vector.ofArray(cast [minX, minY, minZ, minX, minY, maxZ, minX, maxY, minZ, minX, maxY, maxZ, maxX, minY, minZ, maxX, minY, maxZ, maxX, maxY, minZ, maxX, maxY, maxZ]);
+        return [ minX, minY, minZ, minX, minY, maxZ, minX, maxY, minZ, minX, maxY, maxZ, maxX, minY, minZ, maxX, minY, maxZ, maxX, maxY, minZ, maxX, maxY, maxZ ];
     }
 
     static private function transformContainer(bounds:Array<Float>, corners:Array<Float>, matrix:Matrix3D):Void {

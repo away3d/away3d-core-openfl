@@ -973,7 +973,7 @@ class PathExtrude extends Mesh {
     }
 
     private function generateUlist():Void {
-        _distributedU = Vector.ofArray(cast [0]);
+        _distributedU = [ 0 ];
         var tdist:Float = 0;
         var dist:Float = 0;
         var tmpDists:Array<Float> = new Array<Float>();
@@ -1030,7 +1030,7 @@ class PathExtrude extends Mesh {
         }
         if (_smoothScale && rescale) {
             nextscale = new Vector3D(1, 1, 1);
-            vScales = Vector.ofArray(cast [lastscale]);
+            vScales = [ lastscale ];
             if (_scales.length != _path.numSegments + 2) {
                 var lastScl:Vector3D = _scales[_scales.length - 1];
                 while (_scales.length != _path.numSegments + 2)_scales.push(lastScl);
@@ -1042,7 +1042,7 @@ class PathExtrude extends Mesh {
             if (rotate) {
                 lastrotate = ((_rotations[i] == null)) ? lastrotate : _rotations[i];
                 nextrotate = ((_rotations[i + 1] == null)) ? lastrotate : _rotations[i + 1];
-                rotation = Vector.ofArray(cast [lastrotate]);
+                rotation = [ lastrotate ];
                 rotation = rotation.concat(Vector3DUtils.subdivide(lastrotate, nextrotate, _subdivision));
             }
             if (rescale) lastscale = ((_scales[i] == null)) ? lastscale : _scales[i];

@@ -83,7 +83,7 @@ class UVAnimator extends AnimatorBase implements IAnimator {
 	 */
     public function set_autoTranslate(b:Bool):Bool {
         _autoTranslate = b;
-        if (b && _translateIncrease == null) _translateIncrease = Vector.ofArray(cast [0, 0]);
+        if (b && _translateIncrease == null) _translateIncrease = [0, 0];
         return b;
     }
 
@@ -96,7 +96,7 @@ class UVAnimator extends AnimatorBase implements IAnimator {
 	 * Note if value are integers, no visible update will be performed. Values are expected to be in 0-1 range.
 	 */
     public function setTranslateIncrease(u:Float, v:Float):Void {
-        if (_translateIncrease == null) _translateIncrease = Vector.ofArray(cast [0, 0]);
+        if (_translateIncrease == null) _translateIncrease = [0, 0];
         _translateIncrease[0] = u;
         _translateIncrease[1] = v;
     }

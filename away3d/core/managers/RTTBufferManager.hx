@@ -173,7 +173,7 @@ class RTTBufferManager extends EventDispatcher {
         if (_indexBuffer == null) {
             _indexBuffer = context.createIndexBuffer(6);
             var tmp_data:Array<UInt>= [2, 1, 0, 3, 2, 0];
-            _indexBuffer.uploadFromVector(Vector.ofArray(tmp_data), 0, 6);
+            _indexBuffer.uploadFromVector( tmp_data, 0, 6);
         }
         _textureRatioX = x = Math.min(_viewWidth / _textureWidth, 1);
         _textureRatioY = y = Math.min(_viewHeight / _textureHeight, 1);

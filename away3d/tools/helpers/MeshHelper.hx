@@ -447,7 +447,7 @@ class MeshHelper {
             var nuvs:Array<Float> = new Array<Float>();
             var nindices:Array<UInt> = new Array<UInt>();
 
-            var defaultUVS:Array<Float> = Vector.ofArray([0, 1, .5, 0, 1, 1, .5, 0]);
+            var defaultUVS:Array<Float> = [ 0.0, 1.0, 0.5, 0.0, 1.0, 1.0, 0.5, 0.0 ];
             var uvid:UInt = 0;
 
             var uv:UV = null;

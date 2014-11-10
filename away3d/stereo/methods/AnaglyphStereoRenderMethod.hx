@@ -9,7 +9,7 @@ class AnaglyphStereoRenderMethod extends StereoRenderMethodBase {
 
     public function new() {
         super();
-        _filterData = Vector.ofArray([1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]);
+        _filterData = [ 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ];
     }
 
     override public function activate(stage3DProxy:Stage3DProxy):Void {

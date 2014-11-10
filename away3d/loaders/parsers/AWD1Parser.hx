@@ -195,20 +195,21 @@ class AWD1Parser extends ParserBase {
             if (_state == "#o") {
                 if (_buffer == 0) {
                     _id = Std.parseInt(_dline[0]);
-                    m = new Matrix3D(Vector.ofArray([Std.parseFloat(_dline[1]),
+                    m = new Matrix3D([ Std.parseFloat(_dline[1]),
                     Std.parseFloat(_dline[5]),
                     Std.parseFloat(_dline[9]),
-                    0,
+                    0.0,
                     Std.parseFloat(_dline[2]),
                     Std.parseFloat(_dline[6]),
-                    Std.parseFloat(_dline[10]), 0,
+                    Std.parseFloat(_dline[10]),
+                    0.0,
                     Std.parseFloat(_dline[3]),
                     Std.parseFloat(_dline[7]),
                     Std.parseFloat(_dline[11]),
-                    0,
+                    0.0,
                     Std.parseFloat(_dline[4]),
                     Std.parseFloat(_dline[8]),
-                    Std.parseFloat(_dline[12]), 1]));
+                    Std.parseFloat(_dline[12]), 1.0] );
 
                     ++_buffer;
                 }
@@ -264,21 +265,21 @@ class AWD1Parser extends ParserBase {
 
                 _id = Std.parseInt(_dline[0]);
                 cont = (_aC.length == 0) ? _container : new ObjectContainer3D();
-                m = new Matrix3D(Vector.ofArray([Std.parseFloat(_dline[1]),
+                m = new Matrix3D([ Std.parseFloat(_dline[1]),
                 Std.parseFloat(_dline[5]),
                 Std.parseFloat(_dline[9]),
-                0,
+                0.0,
                 Std.parseFloat(_dline[2]),
                 Std.parseFloat(_dline[6]),
                 Std.parseFloat(_dline[10]),
-                0,
+                0.0,
                 Std.parseFloat(_dline[3]),
                 Std.parseFloat(_dline[7]),
                 Std.parseFloat(_dline[11]),
-                0,
+                0.0,
                 Std.parseFloat(_dline[4]),
                 Std.parseFloat(_dline[8]),
-                Std.parseFloat(_dline[12]), 1]));
+                Std.parseFloat(_dline[12]), 1.0 ]);
 
                 cont.transform = m;
                 cont.name = (_dline[13] == "null" || _dline[13] == null) ? "cont_" + _id : _dline[13];

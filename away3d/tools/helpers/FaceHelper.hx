@@ -47,11 +47,11 @@ class FaceHelper {
         _n = getFaceNormal(v0, v1, v2, _n);
         _t = getFaceTangent(v0, v1, v2, uv0.v, uv1.v, uv2.v, 1, _t);
         if (lengthVertices + 9 > LIMIT) {
-            indices = Vector.ofArray(cast [0, 1, 2]);
-            vertices = Vector.ofArray(cast [v0.x, v0.y, v0.z, v1.x, v1.y, v1.z, v2.x, v2.y, v2.z]);
-            uvs = Vector.ofArray(cast [uv0.u, uv0.v, uv1.u, uv1.v, uv2.u, uv2.v]);
-            normals = Vector.ofArray(cast [_n.x, _n.y, _n.z, _n.x, _n.y, _n.z, _n.x, _n.y, _n.z]);
-            tangents = Vector.ofArray(cast [_t.x, _t.y, _t.z, _t.x, _t.y, _t.z, _t.x, _t.y, _t.z]);
+            indices = [ 0, 1, 2 ];
+            vertices = [ v0.x, v0.y, v0.z, v1.x, v1.y, v1.z, v2.x, v2.y, v2.z ];
+            uvs = [ uv0.u, uv0.v, uv1.u, uv1.v, uv2.u, uv2.v ];
+            normals = [ _n.x, _n.y, _n.z, _n.x, _n.y, _n.z, _n.x, _n.y, _n.z ];
+            tangents = [ _t.x, _t.y, _t.z, _t.x, _t.y, _t.z, _t.x, _t.y, _t.z ];
             subGeom = new SubGeometry();
             mesh.geometry.addSubGeometry(subGeom);
         }

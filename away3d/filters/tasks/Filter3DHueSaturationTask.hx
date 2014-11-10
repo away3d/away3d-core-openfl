@@ -128,7 +128,7 @@ class Filter3DHueSaturationTask extends Filter3DTaskBase {
     }
 
     private function updateConstants():Void {
-        _rgbData = Vector.ofArray(cast [0.3, 0.59, 0.11, 0, 1 - _saturation, _saturation, 0, 0, r, g, b, 0]);
+        _rgbData = [ 0.3, 0.59, 0.11, 0.0, 1 - _saturation, _saturation, 0.0, 0.0, r, g, b, 0.0 ];
     }
 }
 

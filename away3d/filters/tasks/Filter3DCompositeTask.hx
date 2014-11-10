@@ -19,7 +19,7 @@ class Filter3DCompositeTask extends Filter3DTaskBase {
 
     public function new(blendMode:String, exposure:Float = 1) {
         super();
-        _data = Vector.ofArray(cast [exposure, 0, 0, 0]);
+        _data = [ exposure, 0.0, 0.0, 0.0 ];
         _blendMode = blendMode;
     }
 

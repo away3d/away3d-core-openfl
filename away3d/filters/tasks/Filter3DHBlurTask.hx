@@ -23,7 +23,7 @@ class Filter3DHBlurTask extends Filter3DTaskBase {
         _stepSize = 1;
         super();
         _amount = amount;
-        _data = Vector.ofArray(cast [0, 0, 0, 1]);
+        _data = [ 0.0, 0.0, 0.0, 1.0 ];
         this.stepSize = stepSize;
     }
 

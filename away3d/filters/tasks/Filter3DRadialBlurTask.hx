@@ -38,7 +38,7 @@ class Filter3DRadialBlurTask extends Filter3DTaskBase {
         _blurWidth = blurWidth;
         _cx = cx;
         _cy = cy;
-        _data = Vector.ofArray(cast [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, LAYERS, LAYERS - 1]);
+        _data = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, LAYERS, LAYERS - 1]);
         resetUniforms();
     }
 

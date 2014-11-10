@@ -18,7 +18,7 @@ class Filter3DBloomCompositeTask extends Filter3DTaskBase {
 
     public function new(exposure:Float) {
         super();
-        _data = Vector.ofArray(cast [0.299, 0.587, 0.114, 1]);
+        _data = [ 0.299, 0.587, 0.114, 1 ];
 // luminance projection, 1
         this.exposure = exposure;
     }
