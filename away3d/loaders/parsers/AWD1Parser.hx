@@ -19,6 +19,8 @@ import away3d.materials.TextureMultiPassMaterial;
 import away3d.materials.utils.DefaultMaterialManager;
 import away3d.textures.Texture2DBase;
 
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
 import openfl.Vector;
 
 class AWD1Parser extends ParserBase {

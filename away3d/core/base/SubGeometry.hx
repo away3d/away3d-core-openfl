@@ -18,17 +18,20 @@ import openfl.display3D.VertexBuffer3D;
 import openfl.geom.Matrix3D;
 import openfl.Vector;
 
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 class SubGeometry extends SubGeometryBase implements ISubGeometry {
     public var numVertices(get_numVertices, never):Int;
-    public var secondaryUVData(get_secondaryUVData, never):Array<Float>;
+    public var secondaryUVData(get_secondaryUVData, never):Float32Array;
     public var secondaryUVStride(get_secondaryUVStride, never):Int;
     public var secondaryUVOffset(get_secondaryUVOffset, never):Int;
 
     // raw data:
-    private var _uvs:Array<Float>;
-    private var _secondaryUvs:Array<Float>;
-    private var _vertexNormals:Array<Float>;
-    private var _vertexTangents:Array<Float>;
+    private var _uvs:Float32Array;
+    private var _secondaryUvs:Float32Array;
+    private var _vertexNormals:Float32Array;
+    private var _vertexTangents:Float32Array;
     private var _verticesInvalid:Array<Bool>;
     private var _uvsInvalid:Array<Bool>;
     private var _secondaryUvsInvalid:Array<Bool>;
@@ -88,7 +91,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
             _verticesInvalid[contextIndex] = true;
         }
         if (_verticesInvalid[contextIndex]) {
-            _vertexBuffer[contextIndex].uploadFromVector(_vertexData, 0, _numVertices);
+            _vertexBuffer[contextIndex].uploadFromFloat32Array(_vertexData, 0, _numVertices);
             _verticesInvalid[contextIndex] = false;
         }
         context.setVertexBufferAt(index, _vertexBuffer[contextIndex], 0, Context3DVertexBufferFormat.FLOAT_3);
@@ -107,7 +110,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
             _uvsInvalid[contextIndex] = true;
         }
         if (_uvsInvalid[contextIndex]) {
-            _uvBuffer[contextIndex].uploadFromVector(_uvs, 0, _numVertices);
+            _uvBuffer[contextIndex].uploadFromFloat32Array(_uvs, 0, _numVertices);
             _uvsInvalid[contextIndex] = false;
         }
         context.setVertexBufferAt(index, _uvBuffer[contextIndex], 0, Context3DVertexBufferFormat.FLOAT_2);
@@ -125,7 +128,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
             _secondaryUvsInvalid[contextIndex] = true;
         }
         if (_secondaryUvsInvalid[contextIndex]) {
-            _secondaryUvBuffer[contextIndex].uploadFromVector(_secondaryUvs, 0, _numVertices);
+            _secondaryUvBuffer[contextIndex].uploadFromFloat32Array(_secondaryUvs, 0, _numVertices);
             _secondaryUvsInvalid[contextIndex] = false;
         }
         context.setVertexBufferAt(index, _secondaryUvBuffer[contextIndex], 0, Context3DVertexBufferFormat.FLOAT_2);
@@ -146,7 +149,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
             _normalsInvalid[contextIndex] = true;
         }
         if (_normalsInvalid[contextIndex]) {
-            _vertexNormalBuffer[contextIndex].uploadFromVector(_vertexNormals, 0, _numVertices);
+            _vertexNormalBuffer[contextIndex].uploadFromFloat32Array(_vertexNormals, 0, _numVertices);
             _normalsInvalid[contextIndex] = false;
         }
         context.setVertexBufferAt(index, _vertexNormalBuffer[contextIndex], 0, Context3DVertexBufferFormat.FLOAT_3);
@@ -167,7 +170,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
             _tangentsInvalid[contextIndex] = true;
         }
         if (_tangentsInvalid[contextIndex]) {
-            _vertexTangentBuffer[contextIndex].uploadFromVector(_vertexTangents, 0, _numVertices);
+            _vertexTangentBuffer[contextIndex].uploadFromFloat32Array(_vertexTangents, 0, _numVertices);
             _tangentsInvalid[contextIndex] = false;
         }
         context.setVertexBufferAt(index, _vertexTangentBuffer[contextIndex], 0, Context3DVertexBufferFormat.FLOAT_3);
@@ -252,11 +255,11 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
     /**
 	 * The raw vertex position data.
 	 */
-    override public function get_vertexData():Array<Float> {
+    override public function get_vertexData():Float32Array {
         return _vertexData;
     }
 
-    override public function get_vertexPositionData():Array<Float> {
+    override public function get_vertexPositionData():Float32Array {
         return _vertexData;
     }
 
@@ -264,7 +267,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
 	 * Updates the vertex data of the SubGeometry.
 	 * @param vertices The new vertex data to upload.
 	 */
-    public function updateVertexData(vertices:Array<Float>):Void {
+    public function updateVertexData(vertices:Float32Array):Void {
         if (_autoDeriveVertexNormals) _vertexNormalsDirty = true;
         if (_autoDeriveVertexTangents) _vertexTangentsDirty = true;
         _faceNormalsDirty = true;
@@ -279,12 +282,12 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
     /**
 	 * The raw texture coordinate data.
 	 */
-    override public function get_UVData():Array<Float> {
+    override public function get_UVData():Float32Array {
         if (_uvsDirty && _autoGenerateUVs) _uvs = updateDummyUVs(_uvs);
         return _uvs;
     }
 
-    public function get_secondaryUVData():Array<Float> {
+    public function get_secondaryUVData():Float32Array {
         return _secondaryUvs;
     }
 
@@ -292,7 +295,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
 	 * Updates the uv coordinates of the SubGeometry.
 	 * @param uvs The uv coordinates to upload.
 	 */
-    public function updateUVData(uvs:Array<Float>):Void {
+    public function updateUVData(uvs:Float32Array):Void {
         // normals don't get dirty from this
         if (_autoDeriveVertexTangents) _vertexTangentsDirty = true;
         _faceTangentsDirty = true;
@@ -300,7 +303,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
         invalidateBuffers(_uvsInvalid);
     }
 
-    public function updateSecondaryUVData(uvs:Array<Float>):Void {
+    public function updateSecondaryUVData(uvs:Float32Array):Void {
         _secondaryUvs = uvs;
         invalidateBuffers(_secondaryUvsInvalid);
     }
@@ -308,7 +311,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
     /**
 	 * The raw vertex normal data.
 	 */
-    override public function get_vertexNormalData():Array<Float> {
+    override public function get_vertexNormalData():Float32Array {
         if (_autoDeriveVertexNormals && _vertexNormalsDirty) _vertexNormals = updateVertexNormals(_vertexNormals);
         return _vertexNormals;
     }
@@ -318,7 +321,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
 	 * autoDeriveVertexNormals will be set to false and vertex normals will no longer be calculated automatically.
 	 * @param vertexNormals The vertex normals to upload.
 	 */
-    public function updateVertexNormalData(vertexNormals:Array<Float>):Void {
+    public function updateVertexNormalData(vertexNormals:Float32Array):Void {
         _vertexNormalsDirty = false;
         _autoDeriveVertexNormals = (vertexNormals == null);
         _vertexNormals = vertexNormals;
@@ -330,7 +333,7 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
 	 *
 	 * @private
 	 */
-    override public function get_vertexTangentData():Array<Float> {
+    override public function get_vertexTangentData():Float32Array {
         if (_autoDeriveVertexTangents && _vertexTangentsDirty) _vertexTangents = updateVertexTangents(_vertexTangents);
         return _vertexTangents;
     }
@@ -340,32 +343,32 @@ class SubGeometry extends SubGeometryBase implements ISubGeometry {
 	 * autoDeriveVertexTangents will be set to false and vertex tangents will no longer be calculated automatically.
 	 * @param vertexTangents The vertex tangents to upload.
 	 */
-    public function updateVertexTangentData(vertexTangents:Array<Float>):Void {
+    public function updateVertexTangentData(vertexTangents:Float32Array):Void {
         _vertexTangentsDirty = false;
         _autoDeriveVertexTangents = (vertexTangents == null);
         _vertexTangents = vertexTangents;
         invalidateBuffers(_tangentsInvalid);
     }
 
-    public function fromVectors(vertices:Array<Float>, uvs:Array<Float>, normals:Array<Float>, tangents:Array<Float>):Void {
+    public function fromVectors(vertices:Float32Array, uvs:Float32Array, normals:Float32Array, tangents:Float32Array):Void {
         updateVertexData(vertices);
         updateUVData(uvs);
         updateVertexNormalData(normals);
         updateVertexTangentData(tangents);
     }
 
-    override private function updateVertexNormals(target:Array<Float>):Array<Float> {
+    override private function updateVertexNormals(target:Float32Array):Float32Array {
         invalidateBuffers(_normalsInvalid);
         return super.updateVertexNormals(target);
     }
 
-    override private function updateVertexTangents(target:Array<Float>):Array<Float> {
+    override private function updateVertexTangents(target:Float32Array):Float32Array {
         if (_vertexNormalsDirty) _vertexNormals = updateVertexNormals(_vertexNormals);
         invalidateBuffers(_tangentsInvalid);
         return super.updateVertexTangents(target);
     }
 
-    override private function updateDummyUVs(target:Array<Float>):Array<Float> {
+    override private function updateDummyUVs(target:Float32Array):Float32Array {
         invalidateBuffers(_uvsInvalid);
         return super.updateDummyUVs(target);
     }

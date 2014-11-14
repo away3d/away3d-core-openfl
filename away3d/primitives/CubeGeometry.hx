@@ -6,6 +6,10 @@ package away3d.primitives;
 
 import away3d.utils.ArrayUtils;
 import away3d.core.base.CompactSubGeometry; 
+
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 class CubeGeometry extends PrimitiveBase {
     public var width(get_width, set_width):Float;
     public var height(get_height, set_height):Float;
@@ -147,8 +151,8 @@ class CubeGeometry extends PrimitiveBase {
 	 * @inheritDoc
 	 */
     override private function buildGeometry(target:CompactSubGeometry):Void {
-        var data:Array<Float>;
-        var indices:Array<UInt>;
+        var data:Float32Array;
+        var indices:Int16Array;
         var tl:Int= 0;
         var tr:Int= 0;
         var bl:Int= 0;
@@ -180,10 +184,10 @@ class CubeGeometry extends PrimitiveBase {
             indices = target.indexData;
             
             if (indices == null)
-                indices = ArrayUtils.Prefill( new Array<UInt>(), Std.int((_segmentsW * _segmentsH + _segmentsW * _segmentsD + _segmentsH * _segmentsD) * 12), 0 );
+                indices = new Int16Array( Std.int((_segmentsW * _segmentsH + _segmentsW * _segmentsD + _segmentsH * _segmentsD) * 12) );
         } else {
-            data = ArrayUtils.Prefill( new Array<Float>(), numVerts * stride, 0 );
-            indices = ArrayUtils.Prefill( new Array<UInt>(), Std.int((_segmentsW * _segmentsH + _segmentsW * _segmentsD + _segmentsH * _segmentsD) * 12), 0);
+            data = new Float32Array( numVerts * stride );
+            indices = new Int16Array( Std.int((_segmentsW * _segmentsH + _segmentsW * _segmentsD + _segmentsH * _segmentsD) * 12) );
 
             invalidateUVs();  
         }
@@ -364,7 +368,7 @@ class CubeGeometry extends PrimitiveBase {
         var i:Int = 0;
         var j:Int;
         var uidx:Int;
-        var data:Array<Float>;
+        var data:Float32Array;
         var u_tile_dim:Float;
         var v_tile_dim:Float;
         var u_tile_step:Float;
@@ -380,7 +384,7 @@ class CubeGeometry extends PrimitiveBase {
         var skip:Int = stride - 2;
         if (target.UVData != null && numUvs == target.UVData.length) data = target.UVData
         else {
-            data = ArrayUtils.Prefill( new Array<Float>(), numUvs, 0 );
+            data = new Float32Array( numUvs );
             invalidateGeometry();
         }
 

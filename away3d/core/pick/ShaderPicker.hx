@@ -38,6 +38,8 @@ import openfl.geom.Point;
 import openfl.geom.Vector3D;
 import openfl.geom.Rectangle;
 import openfl.Vector;
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
 
 class ShaderPicker implements IPicker {
     public var onlyMouseEnabled(get_onlyMouseEnabled, set_onlyMouseEnabled):Bool;
@@ -309,8 +311,8 @@ class ShaderPicker implements IPicker {
 	 */
     private function getPreciseDetails(camera:Camera3D):Void {
         var subGeom:ISubGeometry = cast((_hitRenderable), SubMesh).subGeometry;
-        var indices:Array<UInt> = subGeom.indexData;
-        var vertices:Array<Float> = subGeom.vertexData;
+        var indices:Int16Array = subGeom.indexData;
+        var vertices:Float32Array = subGeom.vertexData;
         var len:Int = indices.length;
         var x1:Float;
         var y1:Float;
@@ -344,8 +346,8 @@ class ShaderPicker implements IPicker {
         var s:Float;
         var t:Float;
         var invDenom:Float;
-        var uvs:Array<Float> = subGeom.UVData;
-        var normals:Array<Float> = subGeom.faceNormals;
+        var uvs:Float32Array = subGeom.UVData;
+        var normals:Float32Array = subGeom.faceNormals;
         var x:Float = _localHitPosition.x;
         var y:Float = _localHitPosition.y;
         var z:Float = _localHitPosition.z;

@@ -22,6 +22,8 @@ import openfl.display3D.Context3DCompareMode;
 import openfl.display3D.Context3DProgramType;
 import openfl.display3D.Context3DTriangleFace;
 import openfl.geom.Matrix3D;
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
 import haxe.ds.ObjectMap;
 
 class OutlinePass extends MaterialPassBase {
@@ -220,10 +222,10 @@ class OutlinePass extends MaterialPassBase {
         var mesh:Mesh = new Mesh(new Geometry(), null);
         var dest:SubGeometry = new SubGeometry();
         var indexLookUp:StringMap<Int> = new StringMap<Int>();
-        var srcIndices:Array<UInt> = source.indexData;
-        var srcVertices:Array<Float> = source.vertexData;
-        var dstIndices:Array<UInt> = new Array<UInt>();
-        var dstVertices:Array<Float> = new Array<Float>();
+        var srcIndices:Int16Array = source.indexData;
+        var srcVertices:Float32Array = source.vertexData;
+        var dstIndices:Int16Array = new Int16Array();
+        var dstVertices:Float32Array = new Float32Array();
         var index:Int;
         var x:Float, y:Float, z:Float;
         var key:String;

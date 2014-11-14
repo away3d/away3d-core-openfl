@@ -9,6 +9,8 @@ import openfl.display3D.Context3DVertexBufferFormat;
 import openfl.display3D.VertexBuffer3D;
 import openfl.geom.Matrix3D;
 
+import openfl.utils.Float32Array;
+
 class CompactSubGeometry extends SubGeometryBase implements ISubGeometry {
     public var numVertices(get_numVertices, never):Int;
     public var secondaryUVStride(get_secondaryUVStride, never):Int;
@@ -22,7 +24,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry {
     private var _activeBuffer:VertexBuffer3D;
     private var _activeContext:Context3D;
     private var _activeDataInvalid:Bool;
-    private var _isolatedVertexPositionData:Array<Float>;
+    private var _isolatedVertexPositionData:Float32Array;
     private var _isolatedVertexPositionDataDirty:Bool;
 
     public function new() {
@@ -46,7 +48,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry {
 	 * 9 - 10: U V
 	 * 11 - 12: Secondary U V
 	 */
-    public function updateData(data:Array<Float>):Void {
+    public function updateData(data:Float32Array):Void {
         if (_autoDeriveVertexNormals) _vertexNormalsDirty = true;
         if (_autoDeriveVertexTangents) _vertexTangentsDirty = true;
         _faceNormalsDirty = true;
@@ -96,7 +98,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry {
 
     private function uploadData(contextIndex:Int):Void {
         //trace("_numVertices"+_numVertices+"  _vertexData:"+_vertexData);
-        _activeBuffer.uploadFromVector(_vertexData, 0, _numVertices);
+        _activeBuffer.uploadFromFloat32Array(_vertexData, 0, _numVertices);
         _vertexDataInvalid[contextIndex] = _activeDataInvalid = false;
     }
 
@@ -131,35 +133,35 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry {
         _activeContext = _bufferContext[contextIndex];
     }
 
-    override public function get_vertexData():Array<Float> {
+    override public function get_vertexData():Float32Array {
         if (_autoDeriveVertexNormals && _vertexNormalsDirty) _vertexData = updateVertexNormals(_vertexData);
         if (_autoDeriveVertexTangents && _vertexTangentsDirty) _vertexData = updateVertexTangents(_vertexData);
         if (_uvsDirty && _autoGenerateUVs) _vertexData = updateDummyUVs(_vertexData);
         return _vertexData;
     }
 
-    override private function updateVertexNormals(target:Array<Float>):Array<Float> {
+    override private function updateVertexNormals(target:Float32Array):Float32Array {
         invalidateBuffers(_vertexDataInvalid);
         return super.updateVertexNormals(target);
     }
 
-    override private function updateVertexTangents(target:Array<Float>):Array<Float> {
+    override private function updateVertexTangents(target:Float32Array):Float32Array {
         if (_vertexNormalsDirty) _vertexData = updateVertexNormals(_vertexData);
         invalidateBuffers(_vertexDataInvalid);
         return super.updateVertexTangents(target);
     }
 
-    override public function get_vertexNormalData():Array<Float> {
+    override public function get_vertexNormalData():Float32Array {
         if (_autoDeriveVertexNormals && _vertexNormalsDirty) _vertexData = updateVertexNormals(_vertexData);
         return _vertexData;
     }
 
-    override public function get_vertexTangentData():Array<Float> {
+    override public function get_vertexTangentData():Float32Array {
         if (_autoDeriveVertexTangents && _vertexTangentsDirty) _vertexData = updateVertexTangents(_vertexData);
         return _vertexData;
     }
 
-    override public function get_UVData():Array<Float> {
+    override public function get_UVData():Float32Array {
         if (_uvsDirty && _autoGenerateUVs) {
             _vertexData = updateDummyUVs(_vertexData);
             invalidateBuffers(_vertexDataInvalid);
@@ -260,7 +262,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry {
         return clone;
     }
 
-    override public function get_vertexPositionData():Array<Float> {
+    override public function get_vertexPositionData():Float32Array {
         if (_isolatedVertexPositionDataDirty || _isolatedVertexPositionData == null) {
             _isolatedVertexPositionData = stripBuffer(0, 3);
             _isolatedVertexPositionDataDirty = false;
@@ -277,8 +279,9 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry {
 	 * - stripBuffer(9, 2): return only the uv's
 	 * - stripBuffer(11, 2): return only the secondary uv's
 	 */
-    public function stripBuffer(offset:Int, numEntries:Int):Array<Float> {
-        var data:Array<Float> = ArrayUtils.Prefill( new Array<Float>(), _numVertices * numEntries);
+    public function stripBuffer(offset:Int, numEntries:Int):Float32Array {
+        //var data:Array<Float> = ArrayUtils.Prefill( new Array<Float>(), _numVertices * numEntries);
+        var data:Float32Array = new Float32Array( _numVertices * numEntries );
         var i:Int = 0;
         var j:Int = offset;
         var skip:Int = 13 - numEntries;
@@ -295,14 +298,15 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry {
         return data;
     }
 
-    public function fromVectors(verts:Array<Float>, uvs:Array<Float>, normals:Array<Float>, tangents:Array<Float>):Void {
+    public function fromVectors(verts:Float32Array, uvs:Float32Array, normals:Float32Array, tangents:Float32Array):Void {
         var vertLen:Int = Std.int(verts.length / 3 * 13);
         var index:Int = 0;
         var v:Int = 0;
         var n:Int = 0;
         var t:Int = 0;
         var u:Int = 0;
-        var data:Array<Float> = ArrayUtils.Prefill( new Array<Float>(), vertLen, 0);
+        //var data:Float32Array = ArrayUtils.Prefill( new Array<Float>(), vertLen, 0);
+        var data:Float32Array = new Float32Array( vertLen );
         while (index < vertLen) {
             data[index++] = verts[v++];
             data[index++] = verts[v++];

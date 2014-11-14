@@ -7,13 +7,16 @@ import away3d.core.base.ISubGeometry;
 import away3d.core.base.SkinnedSubGeometry;
 import away3d.core.base.SubMesh;
 
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 class GeomUtil {
 
     /**
 	 * Build a list of sub-geometries from raw data vectors, splitting them up in
 	 * such a way that they won't exceed buffer length limits.
 	 */
-    static public function fromVectors(verts:Array<Float>, indices:Array<UInt>, uvs:Array<Float>, normals:Array<Float>, tangents:Array<Float>, weights:Array<Float>, jointIndices:Array<UInt>, triangleOffset:Int = 0):Array<ISubGeometry> {
+    static public function fromVectors(verts:Float32Array, indices:Int16Array, uvs:Float32Array, normals:Float32Array, tangents:Float32Array, weights:Float32Array, jointIndices:Int16Array, triangleOffset:Int = 0):Array<ISubGeometry> {
         var LIMIT_VERTS:Int = 3 * 0xffff;
         var LIMIT_INDICES:Int = 15 * 0xffff;
         var subs:Array<ISubGeometry> = new Array<ISubGeometry>();
@@ -27,14 +30,14 @@ class GeomUtil {
             var len:Int;
             var outIndex:Int;
             var j:Int;
-            var splitVerts:Array<Float> = new Array<Float>();
-            var splitIndices:Array<UInt> = new Array<UInt>();
-            var splitUvs:Array<Float> = ((uvs != null)) ? new Array<Float>() : null;
-            var splitNormals:Array<Float> = ((normals != null)) ? new Array<Float>() : null;
-            var splitTangents:Array<Float> = ((tangents != null)) ? new Array<Float>() : null;
-            var splitWeights:Array<Float> = ((weights != null)) ? new Array<Float>() : null;
-            var splitJointIndices:Array<UInt> = ((jointIndices != null)) ? new Array<UInt>() : null;
-            var mappings:Array<Int> = ArrayUtils.Prefill( new Array<Int>(), Std.int(verts.length / 3), 0 );
+            var splitVerts:Float32Array = new Float32Array();
+            var splitIndices:Int16Array = new Int16Array();
+            var splitUvs:Float32Array = ((uvs != null)) ? new Float32Array() : null;
+            var splitNormals:Float32Array = ((normals != null)) ? new Float32Array() : null;
+            var splitTangents:Float32Array = ((tangents != null)) ? new Float32Array() : null;
+            var splitWeights:Float32Array = ((weights != null)) ? new Float32Array() : null;
+            var splitJointIndices:Int16Array = ((jointIndices != null)) ? new Int16Array() : null;
+            var mappings:Int16Array = new Int16Array( Std.int(verts.length / 3) );
             i = mappings.length;
             while (i-- > 0)mappings[i] = -1;
             var originalIndex:Int;
@@ -58,13 +61,13 @@ class GeomUtil {
                 splitIndex = splitVerts.length + 6;
                 if (((outIndex + 2) >= LIMIT_INDICES) || (splitIndex >= LIMIT_VERTS)) {
                     subs.push(constructSubGeometry(splitVerts, splitIndices, splitUvs, splitNormals, splitTangents, splitWeights, splitJointIndices, triangleOffset));
-                    splitVerts = new Array<Float>();
-                    splitIndices = new Array<UInt>();
-                    splitUvs = ((uvs != null)) ? new Array<Float>() : null;
-                    splitNormals = ((normals != null)) ? new Array<Float>() : null;
-                    splitTangents = ((tangents != null)) ? new Array<Float>() : null;
-                    splitWeights = ((weights != null)) ? new Array<Float>() : null;
-                    splitJointIndices = ((jointIndices != null)) ? new Array<UInt>() : null;
+                    splitVerts = new Float32Array();
+                    splitIndices = new Int16Array();
+                    splitUvs = ((uvs != null)) ? new Float32Array() : null;
+                    splitNormals = ((normals != null)) ? new Float32Array() : null;
+                    splitTangents = ((tangents != null)) ? new Float32Array() : null;
+                    splitWeights = ((weights != null)) ? new Float32Array() : null;
+                    splitJointIndices = ((jointIndices != null)) ? new Int16Array() : null;
                     splitIndex = 0;
                     j = mappings.length;
                     while (j-- > 0)mappings[j] = -1;
@@ -140,7 +143,7 @@ class GeomUtil {
     /**
 	 * Build a sub-geometry from data vectors.
 	 */
-    static public function constructSubGeometry(verts:Array<Float>, indices:Array<UInt>, uvs:Array<Float>, normals:Array<Float>, tangents:Array<Float>, weights:Array<Float>, jointIndices:Array<UInt>, triangleOffset:Int):CompactSubGeometry {
+    static public function constructSubGeometry(verts:Float32Array, indices:Int16Array, uvs:Float32Array, normals:Float32Array, tangents:Float32Array, weights:Float32Array, jointIndices:Int16Array, triangleOffset:Int):CompactSubGeometry {
         var sub:CompactSubGeometry;
         if (weights != null && jointIndices != null) {
             // If there were weights and joint indices defined, this
@@ -162,13 +165,13 @@ class GeomUtil {
 	 * with CompactSubGeometry. SubGeometry uses separate buffers, whereas CompactSubGeometry
 	 * uses a single, combined buffer.
 	 */
-    static public function interleaveBuffers(numVertices:Int, vertices:Array<Float> = null, normals:Array<Float> = null, tangents:Array<Float> = null, uvs:Array<Float> = null, suvs:Array<Float> = null):Array<Float> {
+    static public function interleaveBuffers(numVertices:Int, vertices:Float32Array = null, normals:Float32Array = null, tangents:Float32Array = null, uvs:Float32Array = null, suvs:Float32Array = null):Float32Array {
         var i:Int = 0;
         var compIndex:Int;
         var uvCompIndex:Int;
         var interleavedCompIndex:Int;
-        var interleavedBuffer:Array<Float>;
-        interleavedBuffer = new Array<Float>();
+        var interleavedBuffer:Float32Array;
+        interleavedBuffer = new Float32Array();
         
         /**
 		 * 0 - 2: vertex position X, Y, Z

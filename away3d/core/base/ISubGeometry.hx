@@ -3,6 +3,9 @@ package away3d.core.base;
 import away3d.core.managers.Stage3DProxy;
 import openfl.display3D.IndexBuffer3D;
 import openfl.geom.Matrix3D;
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 
 interface ISubGeometry {
     var numVertices(get_numVertices, never):Int;
@@ -12,23 +15,23 @@ interface ISubGeometry {
     var vertexTangentStride(get_vertexTangentStride, never):Int;
     var UVStride(get_UVStride, never):Int;
     var secondaryUVStride(get_secondaryUVStride, never):Int;
-    var vertexData(get_vertexData, never):Array<Float>;
-    var vertexNormalData(get_vertexNormalData, never):Array<Float>;
-    var vertexTangentData(get_vertexTangentData, never):Array<Float>;
+    var vertexData(get_vertexData, never):Float32Array;
+    var vertexNormalData(get_vertexNormalData, never):Float32Array;
+    var vertexTangentData(get_vertexTangentData, never):Float32Array;
     var vertexOffset(get_vertexOffset, never):Int;
     var vertexNormalOffset(get_vertexNormalOffset, never):Int;
     var vertexTangentOffset(get_vertexTangentOffset, never):Int;
     var UVOffset(get_UVOffset, never):Int;
     var secondaryUVOffset(get_secondaryUVOffset, never):Int;
-    var indexData(get_indexData, never):Array<UInt>;
-    var UVData(get_UVData, never):Array<Float>;
+    var indexData(get_indexData, never):Int16Array;
+    var UVData(get_UVData, never):Float32Array;
     var scaleU(get_scaleU, never):Float;
     var scaleV(get_scaleV, never):Float;
     var parentGeometry(get_parentGeometry, set_parentGeometry):Geometry;
-    var faceNormals(get_faceNormals, never):Array<Float>;
+    var faceNormals(get_faceNormals, never):Float32Array;
     var autoDeriveVertexNormals(get_autoDeriveVertexNormals, set_autoDeriveVertexNormals):Bool;
     var autoDeriveVertexTangents(get_autoDeriveVertexTangents, set_autoDeriveVertexTangents):Bool;
-    var vertexPositionData(get_vertexPositionData, never):Array<Float>;
+    var vertexPositionData(get_vertexPositionData, never):Float32Array;
 
     /**
 	 * The total amount of vertices in the SubGeometry.
@@ -113,17 +116,17 @@ interface ISubGeometry {
     /**
 	 * Retrieves the object's vertices as a Number array.
 	 */
-    function get_vertexData():Array<Float>;
+    function get_vertexData():Float32Array;
 
     /**
 	 * Retrieves the object's normals as a Number array.
 	 */
-    function get_vertexNormalData():Array<Float>;
+    function get_vertexNormalData():Float32Array;
 
     /**
 	 * Retrieves the object's tangents as a Number array.
 	 */
-    function get_vertexTangentData():Array<Float>;
+    function get_vertexTangentData():Float32Array;
 
     /**
 	 * The offset into vertexData where the vertices are placed
@@ -153,12 +156,12 @@ interface ISubGeometry {
     /**
 	 * Retrieves the object's indices as a uint array.
 	 */
-    function get_indexData():Array<UInt>;
+    function get_indexData():Int16Array;
 
     /**
 	 * Retrieves the object's uvs as a Number array.
 	 */
-    function get_UVData():Array<Float>;
+    function get_UVData():Float32Array;
     function applyTransformation(transform:Matrix3D):Void;
     function scale(scale:Float):Void;
     function dispose():Void;
@@ -168,13 +171,13 @@ interface ISubGeometry {
     function scaleUV(scaleU:Float = 1, scaleV:Float = 1):Void;
     function get_parentGeometry():Geometry;
     function set_parentGeometry(value:Geometry):Geometry;
-    function get_faceNormals():Array<Float>;
+    function get_faceNormals():Float32Array;
     function cloneWithSeperateBuffers():SubGeometry;
     function get_autoDeriveVertexNormals():Bool;
     function set_autoDeriveVertexNormals(value:Bool):Bool;
     function get_autoDeriveVertexTangents():Bool;
     function set_autoDeriveVertexTangents(value:Bool):Bool;
-    function fromVectors(vertices:Array<Float>, uvs:Array<Float>, normals:Array<Float>, tangents:Array<Float>):Void;
-    function get_vertexPositionData():Array<Float>;
+    function fromVectors(vertices:Float32Array, uvs:Float32Array, normals:Float32Array, tangents:Float32Array):Void;
+    function get_vertexPositionData():Float32Array;
 }
 

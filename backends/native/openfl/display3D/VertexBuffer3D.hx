@@ -23,6 +23,17 @@ class VertexBuffer3D
         GL.deleteBuffer(glBuffer);
     }
 
+    public function uploadFromFloat32Array(float32Array:Float32Array, startOffset:Int, count:Int):Void 
+    {
+        // for (i in 0...176) {
+        //     trace("i:"+i+" = "+float32Array[i]);
+        // }
+        var s = Lib.getTimer();
+        GL.bindBuffer(GL.ARRAY_BUFFER, glBuffer);         
+        GL.bufferData(GL.ARRAY_BUFFER, float32Array, GL.STATIC_DRAW);
+        trace("Time="+(s-Lib.getTimer()));
+    }
+
     public function uploadFromByteArray(byteArray:ByteArray, byteArrayOffset:Int, startOffset:Int, count:Int):Void 
     {
         var bytesPerVertex = data32PerVertex * 4;
@@ -40,7 +51,7 @@ class VertexBuffer3D
             i++;
         }
         #else
-        float32Array = new Float32Array(byteArray,offset, length);
+        float32Array = new Float32Array(byteArray, offset, length);
         #end
         
         GL.bufferData(GL.ARRAY_BUFFER, float32Array, GL.STATIC_DRAW);

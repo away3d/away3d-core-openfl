@@ -19,7 +19,8 @@ import away3d.core.base.CompactSubGeometry;
 import away3d.animators.VertexAnimationSet;
 import openfl.utils.ByteArray;
 import haxe.ds.StringMap;
-
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
 
 /**
  * MD2Parser provides a parser for the MD2 data type.
@@ -56,15 +57,15 @@ class MD2Parser extends ParserBase {
     //private var _offsetGlCmds : Int;
     private var _offsetEnd:Int;
 
-    private var _uvIndices:Array<Float>;
-    private var _indices:Array<UInt>;
-    private var _vertIndices:Array<Float>;
+    private var _uvIndices:Float32Array;
+    private var _indices:Int16Array;
+    private var _vertIndices:Float32Array;
 
     // the current subgeom being built
     private var _animationSet:VertexAnimationSet;
     private var _firstSubGeom:CompactSubGeometry;
-    private var _uvs:Array<Float>;
-    private var _finalUV:Array<Float>;
+    private var _uvs:Float32Array;
+    private var _finalUV:Float32Array;
 
     private var _materialNames:Array<String>;
     private var _textureType:String;
@@ -293,7 +294,7 @@ class MD2Parser extends ParserBase {
     private function parseUV():Void {
         var j:Int = 0;
 
-        _uvs = new Array<Float>();
+        _uvs = new Float32Array();
         _byteData.position = _offsetST;
         for (i in 0..._numST) {
             _uvs[j++] = _byteData.readShort() / _skinWidth;
@@ -309,9 +310,9 @@ class MD2Parser extends ParserBase {
     private function parseFaces():Void {
         var a:Int, b:Int, c:Int, ta:Int, tb:Int, tc:Int;
 
-        _vertIndices = new Array<Float>();
-        _uvIndices = new Array<Float>();
-        _indices = new Array<UInt>();
+        _vertIndices = new Float32Array();
+        _uvIndices = new Float32Array();
+        _indices = new Int16Array();
 
         _byteData.position = _offsetTris;
 
@@ -332,7 +333,7 @@ class MD2Parser extends ParserBase {
         }
 
         var len:Int = _uvIndices.length;
-        _finalUV = new Array<Float>();
+        _finalUV = new Float32Array();
 
         for (i in 0...len) {
             var t:Int = Std.int(_uvIndices[i]);
@@ -388,8 +389,8 @@ class MD2Parser extends ParserBase {
         var geometry:Geometry;
         var subGeom:CompactSubGeometry;
         var vertLen:UInt = _vertIndices.length;
-        var fvertices:Array<Float>;
-        var tvertices:Array<Float>;
+        var fvertices:Float32Array;
+        var tvertices:Float32Array;
         var k:Int;
 
         //var ch : uint;
@@ -405,8 +406,8 @@ class MD2Parser extends ParserBase {
             }
             geometry = new Geometry();
             geometry.addSubGeometry(subGeom);
-            tvertices = new Array<Float>();
-            fvertices = new Array<Float>();
+            tvertices = new Float32Array();
+            fvertices = new Float32Array();
 
             sx = _byteData.readFloat();
             sy = _byteData.readFloat();

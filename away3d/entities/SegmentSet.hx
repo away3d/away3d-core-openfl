@@ -22,6 +22,9 @@ import openfl.geom.Matrix;
 import openfl.geom.Matrix3D;
 import openfl.geom.Vector3D;
 import openfl.Vector;
+
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
 import haxe.ds.IntMap;
 
 class SegmentSet extends Entity implements IRenderable {
@@ -34,13 +37,13 @@ class SegmentSet extends Entity implements IRenderable {
     public var material(get_material, set_material):MaterialBase;
     public var animator(get_animator, never):IAnimator;
     public var uvTransform(get_uvTransform, never):Matrix;
-    public var vertexData(get_vertexData, never):Array<Float>;
-    public var indexData(get_indexData, never):Array<UInt>;
-    public var UVData(get_UVData, never):Array<Float>;
+    public var vertexData(get_vertexData, never):Float32Array;
+    public var indexData(get_indexData, never):Int16Array;
+    public var UVData(get_UVData, never):Float32Array;
     public var numVertices(get_numVertices, never):Int;
     public var vertexStride(get_vertexStride, never):Int;
-    public var vertexNormalData(get_vertexNormalData, never):Array<Float>;
-    public var vertexTangentData(get_vertexTangentData, never):Array<Float>;
+    public var vertexNormalData(get_vertexNormalData, never):Float32Array;
+    public var vertexTangentData(get_vertexTangentData, never):Float32Array;
     public var vertexOffset(get_vertexOffset, never):Int;
     public var vertexNormalOffset(get_vertexNormalOffset, never):Int;
     public var vertexTangentOffset(get_vertexTangentOffset, never):Int;
@@ -84,6 +87,7 @@ class SegmentSet extends Entity implements IRenderable {
             subSet = addSubSet();
             subSetIndex++;
         }
+
         segment.index = subSet.vertices.length;
         segment.subSetIndex = subSetIndex;
         updateSegment(segment);
@@ -140,11 +144,11 @@ class SegmentSet extends Entity implements IRenderable {
         subSet = _subSets[segRef.subSetIndex];
 
         var segment:Segment = segRef.segment;
-        var indices:Array<Int> = subSet.indices;
+        var indices:Int16Array = subSet.indices;
 
         var ind:Int = index * 6;
         for (i in ind...indices.length)
-            indices[i] -= 4;
+            indices[i] = indices[i] - 4;
 
         subSet.indices.splice(index * 6, 6);
         subSet.vertices.splice(index * 44, 44);
@@ -251,6 +255,7 @@ class SegmentSet extends Entity implements IRenderable {
     }
 
     public function updateSegment(segment:Segment):Void {
+        trace("UpdateSegment: subsetIndex="+segment.subSetIndex+" subsetLen:"+_subSets.length);
         //to do: add support for curve segment
         var start:Vector3D = segment._start;
         var end:Vector3D = segment._end;
@@ -269,7 +274,12 @@ class SegmentSet extends Entity implements IRenderable {
         var index:Int = segment.index;
         var t:Float = segment.thickness;
         var subSet:SubSet = _subSets[segment.subSetIndex];
-        var vertices:Array<Float> = subSet.vertices;
+        var vertices:Float32Array = subSet.vertices;        
+
+trace("Vertices="+vertices.length+" index="+index);
+trace(" - data="+startX+", "+startY+", "+startZ+", "+endX+", "+endY+", "+endZ);
+        if (index >= vertices.length)
+            vertices.length += 44;
 
         vertices[index++] = startX;
         vertices[index++] = startY;
@@ -316,6 +326,7 @@ class SegmentSet extends Entity implements IRenderable {
         vertices[index++] = endB;
         vertices[index++] = 1;
         subSet.vertexBufferDirty = true;
+trace(" - new index="+index);
 
         invalidateBounds();
     }
@@ -327,7 +338,7 @@ class SegmentSet extends Entity implements IRenderable {
     public function getIndexBuffer(stage3DProxy:Stage3DProxy):IndexBuffer3D {
         if (_activeSubSet.indexContext3D != stage3DProxy.context3D || _activeSubSet.indexBufferDirty) {
             _activeSubSet.indexBuffer = stage3DProxy._context3D.createIndexBuffer(_activeSubSet.numIndices);
-            _activeSubSet.indexBuffer.uploadFromVector(_activeSubSet.indices, 0, _activeSubSet.numIndices);
+            _activeSubSet.indexBuffer.uploadFromInt16Array( _activeSubSet.indices, 0, _activeSubSet.numIndices);
             _activeSubSet.indexBufferDirty = false;
             _activeSubSet.indexContext3D = stage3DProxy.context3D;
         }
@@ -340,7 +351,7 @@ class SegmentSet extends Entity implements IRenderable {
         _numIndices = subSet.numIndices;
         if (subSet.vertexContext3D != stage3DProxy.context3D || subSet.vertexBufferDirty) {
             subSet.vertexBuffer = stage3DProxy._context3D.createVertexBuffer(subSet.numVertices, 11);
-            subSet.vertexBuffer.uploadFromVector(subSet.vertices, 0, subSet.numVertices);
+            subSet.vertexBuffer.uploadFromFloat32Array( subSet.vertices, 0, subSet.numVertices);
             subSet.vertexBufferDirty = false;
             subSet.vertexContext3D = stage3DProxy.context3D;
         }
@@ -382,9 +393,9 @@ class SegmentSet extends Entity implements IRenderable {
     private function addSubSet():SubSet {
         var subSet:SubSet = new SubSet();
         _subSets.push(subSet);
-        subSet.vertices = new Array<Float>();
+        subSet.vertices = new Float32Array();
         subSet.numVertices = 0;
-        subSet.indices = new Array<Int>();
+        subSet.indices = new Int16Array();
         subSet.numIndices = 0;
         subSet.vertexBufferDirty = true;
         subSet.indexBufferDirty = true;
@@ -435,7 +446,7 @@ class SegmentSet extends Entity implements IRenderable {
         var maxX:Float = Math.NEGATIVE_INFINITY;
         var maxY:Float = Math.NEGATIVE_INFINITY;
         var maxZ:Float = Math.NEGATIVE_INFINITY;
-        var vertices:Array<Float>;
+        var vertices:Float32Array;
         var i:Int = 0;
         while (i < _subSetCount) {
             subSet = _subSets[i];
@@ -510,15 +521,15 @@ class SegmentSet extends Entity implements IRenderable {
         return null;
     }
 
-    public function get_vertexData():Array<Float> {
+    public function get_vertexData():Float32Array {
         return null;
     }
 
-    public function get_indexData():Array<UInt> {
+    public function get_indexData():Int16Array {
         return null;
     }
 
-    public function get_UVData():Array<Float> {
+    public function get_UVData():Float32Array {
         return null;
     }
 
@@ -530,11 +541,11 @@ class SegmentSet extends Entity implements IRenderable {
         return 11;
     }
 
-    public function get_vertexNormalData():Array<Float> {
+    public function get_vertexNormalData():Float32Array {
         return null;
     }
 
-    public function get_vertexTangentData():Array<Float> {
+    public function get_vertexTangentData():Float32Array {
         return null;
     }
 
@@ -571,9 +582,9 @@ class SegRef {
 
 class SubSet {
 
-    public var vertices:Array<Float>;
+    public var vertices:Float32Array;
     public var numVertices:Int;
-    public var indices:Array<Int>;
+    public var indices:Int16Array;
     public var numIndices:Int;
     public var vertexBufferDirty:Bool;
     public var indexBufferDirty:Bool;

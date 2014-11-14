@@ -13,58 +13,65 @@ import openfl.geom.Matrix;
 import openfl.geom.Matrix3D;
 import openfl.geom.Point;
 import openfl.geom.Vector3D;
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
 
 class ParticleGeometryHelper {
 
     static public var MAX_VERTEX:Int = 65535;
 
     static public function generateGeometry(geometries:Array<Geometry>, transforms:Array<ParticleGeometryTransform> = null):ParticleGeometry {
-        var verticesVector:Array<Array<Float>> = new Array<Array<Float>>();
-        var indicesVector:Array<Array<UInt>> = new Array<Array<UInt>>();
-        var vertexCounters:Array<UInt> = new Array<UInt>();
+        var verticesVector:Array<Float32Array> = new Array<Float32Array>();
+        var indicesVector:Array<Int16Array> = new Array<Int16Array>();
+        var vertexCounters:Int16Array = new Int16Array();
         var particles:Array<ParticleData> = new Array<ParticleData>();
         var subGeometries:Array<CompactSubGeometry> = new Array<CompactSubGeometry>();
         var numParticles:Int = geometries.length;
         var sourceSubGeometries:Array<ISubGeometry>;
         var sourceSubGeometry:ISubGeometry;
         var numSubGeometries:Int;
-        var vertices:Array<Float>;
-        var indices:Array<UInt>;
+        var vertices:Float32Array;
+        var indices:Int16Array;
         var vertexCounter:Int;
         var subGeometry:CompactSubGeometry;
         var i:Int;
         var j:Int;
-        var sub2SubMap:Array<Int> = new Array<Int>();
+        var sub2SubMap:Int16Array = new Int16Array();
         var tempVertex:Vector3D = new Vector3D();
         var tempNormal:Vector3D = new Vector3D();
         var tempTangents:Vector3D = new Vector3D();
         var tempUV:Point = new Point();
+        
         i = 0;
         while (i < numParticles) {
             sourceSubGeometries = geometries[i].subGeometries;
             numSubGeometries = sourceSubGeometries.length;
             var srcIndex:Int = 0;
             while (srcIndex < numSubGeometries) {
-//create a different particle subgeometry group for each source subgeometry in a particle.
+                
+                //create a different particle subgeometry group for each source subgeometry in a particle.
                 if (sub2SubMap.length <= srcIndex) {
                     sub2SubMap.push(subGeometries.length);
-                    verticesVector.push(new Array<Float>());
-                    indicesVector.push(new Array<UInt>());
+                    verticesVector.push(new Float32Array());
+                    indicesVector.push(new Int16Array());
                     subGeometries.push(new CompactSubGeometry());
                     vertexCounters.push(0);
                 }
                 sourceSubGeometry = sourceSubGeometries[srcIndex];
-//add a new particle subgeometry if this source subgeometry will take us over the maxvertex limit
+                
+                //add a new particle subgeometry if this source subgeometry will take us over the maxvertex limit
                 if (Std.int(sourceSubGeometry.numVertices + vertexCounters[sub2SubMap[srcIndex]]) > MAX_VERTEX) {
-//update submap and add new subgeom vectors
+
+                    //update submap and add new subgeom vectors
                     sub2SubMap[srcIndex] = subGeometries.length;
-                    verticesVector.push(new Array<Float>());
-                    indicesVector.push(new Array<UInt>());
+                    verticesVector.push(new Float32Array());
+                    indicesVector.push(new Int16Array());
                     subGeometries.push(new CompactSubGeometry());
                     vertexCounters.push(0);
                 }
                 j = sub2SubMap[srcIndex];
-//select the correct vector
+
+                //select the correct vector
                 vertices = verticesVector[j];
                 indices = indicesVector[j];
                 vertexCounter = vertexCounters[j];
@@ -75,12 +82,12 @@ class ParticleGeometryHelper {
                 particleData.particleIndex = i;
                 particleData.subGeometry = subGeometry;
                 particles.push(particleData);
-                vertexCounters[j] += sourceSubGeometry.numVertices;
+                vertexCounters[j] = vertexCounters[j] + sourceSubGeometry.numVertices;
                 var k:Int;
                 var tempLen:Int;
                 var compact:CompactSubGeometry = cast(sourceSubGeometry, CompactSubGeometry);
                 var product:Int;
-                var sourceVertices:Array<Float>;
+                var sourceVertices:Float32Array;
                 if (compact != null) {
                     tempLen = compact.numVertices;
                     compact.numTriangles;
@@ -92,7 +99,7 @@ class ParticleGeometryHelper {
                         var UVTransform:Matrix = particleGeometryTransform.UVTransform;
                         k = 0;
                         while (k < tempLen) {
-/*
+                            /*
 							 * 0 - 2: vertex position X, Y, Z
 							 * 3 - 5: normal X, Y, Z
 							 * 6 - 8: tangent X, Y, Z
@@ -137,7 +144,8 @@ class ParticleGeometryHelper {
                         k = 0;
                         while (k < tempLen) {
                             product = k * 13;
-//this is faster than that only push one data
+                            
+                            //this is faster than that only push one data
                             vertices.push(sourceVertices[product]);
                             vertices.push(sourceVertices[product + 1]);
                             vertices.push(sourceVertices[product + 2]);
@@ -158,10 +166,10 @@ class ParticleGeometryHelper {
                 }
 
                 else {
-//Todo
+                    //Todo
                 }
 
-                var sourceIndices:Array<UInt> = sourceSubGeometry.indexData;
+                var sourceIndices:Int16Array = sourceSubGeometry.indexData;
                 tempLen = sourceSubGeometry.numTriangles;
                 k = 0;
                 while (k < tempLen) {
@@ -175,10 +183,12 @@ class ParticleGeometryHelper {
             }
             i++;
         }
+        
         var particleGeometry:ParticleGeometry = new ParticleGeometry();
         particleGeometry.particles = particles;
         particleGeometry.numParticles = numParticles;
         numParticles = subGeometries.length;
+        
         i = 0;
         while (i < numParticles) {
             subGeometry = subGeometries[i];
@@ -187,6 +197,7 @@ class ParticleGeometryHelper {
             particleGeometry.addSubGeometry(subGeometry);
             i++;
         }
+        
         return particleGeometry;
     }
 }

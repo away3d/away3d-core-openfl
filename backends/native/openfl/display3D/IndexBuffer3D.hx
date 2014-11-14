@@ -16,6 +16,12 @@ class IndexBuffer3D
       this.numIndices = numIndices;
     }
 
+    public function uploadFromInt16Array(indices:Int16Array, startOffset:Int, count:Int):Void 
+    {
+        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, glBuffer);
+        GL.bufferData(GL.ELEMENT_ARRAY_BUFFER, indices, GL.STATIC_DRAW);
+    }
+
     public function uploadFromByteArray(byteArray:ByteArray, byteArrayOffset:Int, startOffset:Int, count:Int):Void 
     {
         var bytesPerIndex = 2;

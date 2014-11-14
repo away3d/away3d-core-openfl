@@ -6,6 +6,9 @@ package away3d.primitives;
 import away3d.utils.ArrayUtils;
 import away3d.core.base.CompactSubGeometry;
 
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 class CapsuleGeometry extends PrimitiveBase {
     public var radius(get_radius, set_radius):Float;
     public var height(get_height, set_height):Float;
@@ -39,8 +42,8 @@ class CapsuleGeometry extends PrimitiveBase {
 	 * @inheritDoc
 	 */
     override private function buildGeometry(target:CompactSubGeometry):Void {
-        var data:Array<Float>;
-        var indices:Array<UInt>;
+        var data:Float32Array;
+        var indices:Int16Array;
         var i:Int = 0;
         var j:Int = 0;
         var triIndex:Int = 0;
@@ -108,15 +111,17 @@ class CapsuleGeometry extends PrimitiveBase {
                 }
 
                 else {
-// vertex
+                    // vertex
                     data[index++] = x;
                     data[index++] = ((_yUp)) ? comp1 - offset : comp1;
                     data[index++] = ((_yUp)) ? comp2 : comp2 + offset;
-// normal
+                    
+                    // normal
                     data[index++] = x * normLen;
                     data[index++] = comp1 * normLen;
                     data[index++] = comp2 * normLen;
-// tangent
+                    
+                    // tangent
                     data[index++] = tanLen > (.007) ? -y / tanLen : 1;
                     data[index++] = t1;
                     data[index++] = t2;
@@ -168,7 +173,7 @@ class CapsuleGeometry extends PrimitiveBase {
         var i:Int;
         var j:Int;
         var index:Int;
-        var data:Array<Float>;
+        var data:Float32Array;
         var stride:Int = target.UVStride;
         var UVlen:Int = (_segmentsH + 1) * (_segmentsW + 1) * stride;
         var skip:Int = stride - 2;

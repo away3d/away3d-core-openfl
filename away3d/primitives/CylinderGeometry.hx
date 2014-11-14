@@ -7,6 +7,9 @@ package away3d.primitives;
 import away3d.utils.ArrayUtils;
 import away3d.core.base.CompactSubGeometry;
 
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 class CylinderGeometry extends PrimitiveBase {
     public var topRadius(get_topRadius, set_topRadius):Float;
     public var bottomRadius(get_bottomRadius, set_bottomRadius):Float;

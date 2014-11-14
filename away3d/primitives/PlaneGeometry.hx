@@ -6,6 +6,10 @@ package away3d.primitives;
 
 import away3d.core.base.CompactSubGeometry;
 import away3d.utils.ArrayUtils;
+
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 class PlaneGeometry extends PrimitiveBase {
     public var segmentsW(get_segmentsW, set_segmentsW):Int;
     public var segmentsH(get_segmentsH, set_segmentsH):Int;
@@ -124,8 +128,8 @@ class PlaneGeometry extends PrimitiveBase {
 	 * @inheritDoc
 	 */
     override private function buildGeometry(target:CompactSubGeometry):Void {
-        var data:Array<Float>;
-        var indices:Array<UInt>;
+        var data:Float32Array;
+        var indices:Int16Array;
         var x:Float;
         var y:Float;
         var numIndices:Int;
@@ -134,20 +138,23 @@ class PlaneGeometry extends PrimitiveBase {
         var numVertices:Int = (_segmentsH + 1) * tw;
         var stride:Int = target.vertexStride;
         var skip:Int = stride - 9;
+        
         if (_doubleSided) numVertices *= 2;
         numIndices = _segmentsH * _segmentsW * 6;
+        
         if (_doubleSided) numIndices <<= 1;
         if (numVertices == target.numVertices) {
             data = target.vertexData;
             indices = target.indexData ;
             if (indices == null) {
-                indices = ArrayUtils.Prefill( new Array<UInt>(), numIndices, 0 );
+                //indices = ArrayUtils.Prefill( new Array<UInt>(), numIndices, 0 );
+                indices = new Int16Array( numIndices );
             }
-        }
-
-        else {
-            data = ArrayUtils.Prefill( new Array<Float>(), numVertices * stride, 0 );
-            indices = ArrayUtils.Prefill( new Array<UInt>(), numIndices, 0 );
+        } else {
+            //data = ArrayUtils.Prefill( new Array<Float>(), numVertices * stride, 0 );
+            data = new Float32Array( numVertices * stride );
+            //indices = ArrayUtils.Prefill( new Array<UInt>(), numIndices, 0 );
+            indices = new Int16Array( numIndices );
             invalidateUVs();
         }
 
@@ -185,7 +192,8 @@ class PlaneGeometry extends PrimitiveBase {
                 data[index++] = 0;
                 data[index++] = 0;
                 index += skip;
-// add vertex with same position, but with inverted normal & tangent
+
+                // add vertex with same position, but with inverted normal & tangent
                 if (_doubleSided) {
                     var i:Int = 0;
                     while (i < 3) {
@@ -207,8 +215,10 @@ class PlaneGeometry extends PrimitiveBase {
                     }
                     index += skip;
                 }
+                
                 if (xi != _segmentsW && yi != _segmentsH) {
                     base = xi + yi * tw;
+                    
                     var mult:Int = (_doubleSided) ? 2 : 1;
                     indices[numIndices++] = base * mult;
                     indices[numIndices++] = (base + tw) * mult;
@@ -216,6 +226,7 @@ class PlaneGeometry extends PrimitiveBase {
                     indices[numIndices++] = base * mult;
                     indices[numIndices++] = (base + tw + 1) * mult;
                     indices[numIndices++] = (base + 1) * mult;
+                    
                     if (_doubleSided) {
                         indices[numIndices++] = (base + tw + 1) * mult + 1;
                         indices[numIndices++] = (base + tw) * mult + 1;
@@ -237,7 +248,7 @@ class PlaneGeometry extends PrimitiveBase {
 	 * @inheritDoc
 	 */
     override private function buildUVs(target:CompactSubGeometry):Void {
-        var data:Array<Float>;
+        var data:Float32Array;
         var stride:Int = target.UVStride;
         var numUvs:Int = (_segmentsH + 1) * (_segmentsW + 1) * stride;
         var skip:Int = stride - 2;
@@ -245,7 +256,7 @@ class PlaneGeometry extends PrimitiveBase {
         if (target.UVData != null && numUvs == target.UVData.length) 
             data = target.UVData
         else {
-            data = ArrayUtils.Prefill( new Array<Float>(), numUvs);
+            data = new Float32Array( numUvs );
             invalidateGeometry();
         }
 

@@ -7,6 +7,9 @@ package away3d.primitives;
 import away3d.utils.ArrayUtils;
 import away3d.core.base.CompactSubGeometry;
 
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 class SphereGeometry extends PrimitiveBase {
     public var radius(get_radius, set_radius):Float;
     public var segmentsW(get_segmentsW, set_segmentsW):Int;
@@ -37,8 +40,8 @@ class SphereGeometry extends PrimitiveBase {
 	 * @inheritDoc
 	 */
     override private function buildGeometry(target:CompactSubGeometry):Void {
-        var vertices:Array<Float>;
-        var indices:Array<UInt>;
+        var vertices:Float32Array;
+        var indices:Int16Array;
         var i:Int = 0;
         var j:Int = 0;
         var triIndex:Int = 0;
@@ -49,10 +52,10 @@ class SphereGeometry extends PrimitiveBase {
             vertices = target.vertexData;
             indices = target.indexData ;
             if (indices == null)
-                indices = ArrayUtils.Prefill( new Array<UInt>(), (_segmentsH - 1) * _segmentsW * 6, 0 );
+                indices = new Int16Array( (_segmentsH - 1) * _segmentsW * 6 );
         } else {
-            vertices = ArrayUtils.Prefill( new Array<Float>(), numVerts * stride, 0 );
-            indices = ArrayUtils.Prefill( new Array<UInt>(), (_segmentsH - 1) * _segmentsW * 6, 0 );
+            vertices = new Float32Array( numVerts * stride );
+            indices = new Int16Array( (_segmentsH - 1) * _segmentsW * 6 );
             
             invalidateGeometry();
         }
@@ -155,12 +158,12 @@ class SphereGeometry extends PrimitiveBase {
         var j:Int;
         var stride:Int = target.UVStride;
         var numUvs:Int = (_segmentsH + 1) * (_segmentsW + 1) * stride;
-        var data:Array<Float>;
+        var data:Float32Array;
         var skip:Int = stride - 2;
         if (target.UVData != null && numUvs == target.UVData.length) 
             data = target.UVData
         else {
-            data = ArrayUtils.Prefill( new Array<Float>(), numUvs, 0 );
+            data = new Float32Array( numUvs );
             invalidateGeometry();
         }
 

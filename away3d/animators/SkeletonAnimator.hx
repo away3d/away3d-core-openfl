@@ -27,6 +27,8 @@ import away3d.animators.data.Skeleton;
 
 import away3d.core.base.CompactSubGeometry;
 
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
 import openfl.Vector;
 
 class SkeletonAnimator extends AnimatorBase implements IAnimator {
@@ -588,7 +590,7 @@ class SkeletonAnimator extends AnimatorBase implements IAnimator {
 
 class SubGeomAnimationState {
 
-    public var animatedVertexData:Array<Float>;
+    public var animatedVertexData:Float32Array;
     public var dirty:Bool;
 
     public function new(subGeom:CompactSubGeometry) {

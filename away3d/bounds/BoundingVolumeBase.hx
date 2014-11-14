@@ -13,6 +13,7 @@ import away3d.core.math.Plane3D;
 import openfl.geom.Matrix3D;
 import openfl.geom.Vector3D;
 import openfl.Vector;
+import openfl.utils.Float32Array;
 
 class BoundingVolumeBase {
     public var max(get_max, never):Vector3D;
@@ -95,7 +96,7 @@ class BoundingVolumeBase {
 	 *
 	 * @param vertices A Vector.&lt;Number&gt; of vertex data to be bounded.
 	 */
-    public function fromVertices(vertices:Array<Float>):Void {
+    public function fromVertices(vertices:Float32Array):Void {
         var i:Int = 0;
         var len:Int = vertices.length;
         var minX:Float;
@@ -147,7 +148,7 @@ class BoundingVolumeBase {
             maxX = maxY = maxZ = Math.NEGATIVE_INFINITY;
             while (j < numSubGeoms) {
                 var subGeom:ISubGeometry = subGeoms[j++];
-                var vertices:Array<Float> = subGeom.vertexData;
+                var vertices:Float32Array = subGeom.vertexData;
                 var vertexDataLen:Int = vertices.length;
                 var i:Int = subGeom.vertexOffset;
                 var stride:Int = subGeom.vertexStride;

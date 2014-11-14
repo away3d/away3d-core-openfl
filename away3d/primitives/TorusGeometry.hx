@@ -7,6 +7,9 @@ package away3d.primitives;
 import away3d.utils.ArrayUtils;
 import away3d.core.base.CompactSubGeometry;
 
+import openfl.utils.Float32Array;
+import openfl.utils.Int16Array;
+
 class TorusGeometry extends PrimitiveBase {
     public var radius(get_radius, set_radius):Float;
     public var tubeRadius(get_tubeRadius, set_tubeRadius):Float;
@@ -19,8 +22,8 @@ class TorusGeometry extends PrimitiveBase {
     private var _segmentsR:Int;
     private var _segmentsT:Int;
     private var _yUp:Bool;
-    private var _rawVertexData:Array<Float>;
-    private var _rawIndices:Array<UInt>;
+    private var _rawVertexData:Float32Array;
+    private var _rawIndices:Int16Array;
     private var _nextVertexIndex:Int;
     private var _currentIndex:Int;
     private var _currentTriangleIndex:Int;
@@ -88,13 +91,13 @@ class TorusGeometry extends PrimitiveBase {
 
             _rawIndices = target.indexData ;
             if (_rawIndices == null)
-                _rawIndices = ArrayUtils.Prefill( new Array<UInt>(), numTriangles * 3, 0);
+                _rawIndices = new Int16Array( numTriangles * 3 );
         }
 
         else {
             var numVertComponents:Int = _numVertices * _vertexStride;
-            _rawVertexData = ArrayUtils.Prefill( new Array<Float>(), numVertComponents, 0);
-            _rawIndices = ArrayUtils.Prefill( new Array<UInt>(), numTriangles * 3, 0);
+            _rawVertexData = new Float32Array( numVertComponents );
+            _rawIndices = new Int16Array( numTriangles * 3 );
             
             invalidateUVs();
         }
@@ -184,7 +187,7 @@ class TorusGeometry extends PrimitiveBase {
     override private function buildUVs(target:CompactSubGeometry):Void {
         var i:Int;
         var j:Int;
-        var data:Array<Float>;
+        var data:Float32Array;
         var stride:Int = target.UVStride;
         var offset:Int = target.UVOffset;
         var skip:Int = target.UVStride - 2;
@@ -195,7 +198,7 @@ class TorusGeometry extends PrimitiveBase {
         // need to initialize raw array or can be reused?
         if (target.UVData != null && numUvs == target.UVData.length) data = target.UVData
         else {
-            data = ArrayUtils.Prefill( new Array<Float>(), numUvs, 0);
+            data = new Float32Array( numUvs );
             invalidateGeometry();
         }
 
