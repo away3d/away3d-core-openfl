@@ -6,6 +6,7 @@ package away3d.animators.states;
 import away3d.utils.ArrayUtils;
 import openfl.errors.Error;
 import away3d.animators.data.ParticlePropertiesMode;
+import openfl.Vector;
 
 import away3d.cameras.Camera3D;
 import away3d.animators.data.AnimationRegisterCache;

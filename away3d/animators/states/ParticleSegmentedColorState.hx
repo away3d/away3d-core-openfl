@@ -5,6 +5,7 @@ import away3d.animators.data.AnimationRegisterCache;
 import away3d.animators.data.AnimationSubGeometry;
 import away3d.animators.data.ColorSegmentPoint;
 import away3d.animators.nodes.ParticleSegmentedColorNode;
+import openfl.Vector;
 
 import away3d.cameras.Camera3D;
 import away3d.core.base.IRenderable;

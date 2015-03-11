@@ -16,6 +16,7 @@ import away3d.core.base.Object3D;
 import away3d.core.math.MathConsts;
 import openfl.display3D.Context3DVertexBufferFormat;
 import openfl.geom.Vector3D;
+import openfl.Vector;
 
 class ParticleFollowState extends ParticleStateBase {
     public var followTarget(get_followTarget, set_followTarget):Object3D;

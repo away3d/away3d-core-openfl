@@ -39,7 +39,7 @@ class ParticleBillboardState extends ParticleStateBase {
             var look:Vector3D = camera.sceneTransform.position.subtract(pos);
             var right:Vector3D = look.crossProduct(_billboardAxis);
             
-            ight.normalize();
+            right.normalize();
             look = _billboardAxis.crossProduct(right);
             look.normalize();
 

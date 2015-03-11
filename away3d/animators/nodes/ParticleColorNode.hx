@@ -124,7 +124,7 @@ class ParticleColorNode extends ParticleNodeBase {
                 animationRegisterCache.setRegisterIndex(this, START_MULTIPLIER_INDEX, startMultiplierValue.index);
                 animationRegisterCache.setRegisterIndex(this, DELTA_MULTIPLIER_INDEX, deltaMultiplierValue.index);
                 
-                code += "mul " + temp + "," + deltaMultiplierValue + "," + ((_usesCycle) ? sin : animationRegisterCache.vertexLife.toString()) + "\n";
+                code += "mul " + temp + "," + deltaMultiplierValue + "," + ((_usesCycle) ? sin : animationRegisterCache.vertexLife) + "\n";
                 code += "add " + temp + "," + temp + "," + startMultiplierValue + "\n";
                 code += "mul " + animationRegisterCache.colorMulTarget + "," + temp + "," + animationRegisterCache.colorMulTarget + "\n";
             }
@@ -134,7 +134,7 @@ class ParticleColorNode extends ParticleNodeBase {
                 animationRegisterCache.setRegisterIndex(this, START_OFFSET_INDEX, startOffsetValue.index);
                 animationRegisterCache.setRegisterIndex(this, DELTA_OFFSET_INDEX, deltaOffsetValue.index);
                 
-                code += "mul " + temp + "," + deltaOffsetValue + "," + ((_usesCycle) ? sin : animationRegisterCache.vertexLife.toString()) + "\n";
+                code += "mul " + temp + "," + deltaOffsetValue + "," + ((_usesCycle) ? sin : animationRegisterCache.vertexLife) + "\n";
                 code += "add " + temp + "," + temp + "," + startOffsetValue + "\n";
                 code += "add " + animationRegisterCache.colorAddTarget + "," + temp + "," + animationRegisterCache.colorAddTarget + "\n";
             }

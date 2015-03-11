@@ -6,6 +6,7 @@ package away3d.animators.states;
 import openfl.errors.Error;
 import haxe.ds.ObjectMap;
 import away3d.animators.data.ParticlePropertiesMode;
+import openfl.Vector;
 
 import away3d.cameras.Camera3D;
 import away3d.animators.data.AnimationRegisterCache;
