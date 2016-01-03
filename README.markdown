@@ -65,7 +65,16 @@ NOTE: When using OpenFL 3.x and the non-html5 targets, please add the -Dlegacy o
 	openfl test mac -Dlegacy
 	
 ##Dependencies
-Requires OpenFL 2.2.4
+
+Away3D currently requires OpenFL 2.2.4, and Lime 2.1.0. You can install these older versions with haxelib like this:
+
+	haxelib install openfl 2.2.4
+	haxelib install lime 2.1.0
+	
+You can then set your active libary versions like so:
+	
+	haxelib set openfl 2.2.4
+	haxelib set lime 2.1.0
 
 ##License
 
