@@ -1,33 +1,24 @@
 package away3d.extrusions;
 
-import openfl.Vector;
-import Reflect;
-import Reflect;
-import Reflect;
-import Reflect;
-import Reflect;
-import Reflect;
-import Reflect;
-import away3d.extrusions.data.RenderSide;
-import away3d.extrusions.data.Line;
-import away3d.extrusions.data.FourPoints;
-import away3d.extrusions.data.SubGeometryList;
-import openfl.errors.Error;
 import away3d.bounds.BoundingVolumeBase;
+import away3d.core.base.data.UV;
+import away3d.core.base.data.Vertex;
 import away3d.core.base.Geometry;
 import away3d.core.base.SubGeometry;
 import away3d.core.base.SubMesh;
-import away3d.core.base.data.UV;
-import away3d.core.base.data.Vertex;
 import away3d.entities.Mesh;
+import away3d.extrusions.data.FourPoints;
+import away3d.extrusions.data.Line;
+import away3d.extrusions.data.RenderSide;
+import away3d.extrusions.data.SubGeometryList;
 import away3d.materials.MaterialBase;
 import away3d.materials.utils.MultipleMaterials;
 import away3d.tools.helpers.MeshHelper;
+import openfl.errors.Error;
 import openfl.geom.Point;
 import openfl.geom.Vector3D;
-import away3d.core.base.SubGeometry;
-import away3d.materials.MaterialBase;
-import openfl.geom.Point;
+import openfl.Vector;
+import Reflect;
 
 class LinearExtrude extends Mesh {
     public var axis(get, set):String;
@@ -104,7 +95,6 @@ class LinearExtrude extends Mesh {
         var geom:Geometry = new Geometry();
         _subGeometry = new SubGeometry();
         if (material == null && materials != null && materials.front != null) material = materials.front;
-        super(geom, material);
         _aVectors = vectors;
         _axis = axis;
         _offset = offset;
@@ -118,10 +108,11 @@ class LinearExtrude extends Mesh {
         _closePath = closePath;
         if (materials != null) this.materials = materials;
         if (_closePath && ignoreSides != "") this.ignoreSides = ignoreSides;
+        super(geom, material);
     }
 
     private function buildExtrude():Void {
-        if (_aVectors.length != 0 || _aVectors.length < 2) throw new Error("LinearExtrusion error: at least 2 vector3D required!");
+        if (_aVectors!=null && _aVectors.length > 0 && _aVectors.length < 2) throw new Error("LinearExtrusion error: at least 2 vector3D required!");
         if (_closePath) _aVectors.push(new Vector3D(_aVectors[0].x, _aVectors[0].y, _aVectors[0].z));
         _maxIndProfile = _aVectors.length * 9;
         _MaterialsSubGeometries = null;
@@ -583,7 +574,7 @@ class LinearExtrude extends Mesh {
                 _varr.push(new Vertex(vector.x, vector.y, vector.z));
                 j = 0;
                 while (j < _subdivision) {
-                    Reflect.setField(vector, _axis, Reflect.field(vector, _axis) + increase);
+                    Reflect.setField(vector, "_"+_axis, Reflect.field(vector, _axis) + increase);
                     _varr.push(new Vertex(vector.x, vector.y, vector.z));
                     j++;
                 }
