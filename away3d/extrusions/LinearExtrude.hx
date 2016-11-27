@@ -106,13 +106,13 @@ class LinearExtrude extends Mesh {
         this.thicknessSubdivision = thicknessSubdivision;
         _ignoreSides = ignoreSides;
         _closePath = closePath;
+        super(geom, material);
         if (materials != null) this.materials = materials;
         if (_closePath && ignoreSides != "") this.ignoreSides = ignoreSides;
-        super(geom, material);
     }
 
     private function buildExtrude():Void {
-        if (_aVectors!=null && _aVectors.length > 0 && _aVectors.length < 2) throw new Error("LinearExtrusion error: at least 2 vector3D required!");
+        if (_aVectors==null || (_aVectors.length > 0 && _aVectors.length < 2)) throw new Error("LinearExtrusion error: at least 2 vector3D required!");
         if (_closePath) _aVectors.push(new Vector3D(_aVectors[0].x, _aVectors[0].y, _aVectors[0].z));
         _maxIndProfile = _aVectors.length * 9;
         _MaterialsSubGeometries = null;
