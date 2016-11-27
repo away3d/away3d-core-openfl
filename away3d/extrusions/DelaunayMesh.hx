@@ -74,12 +74,12 @@ class DelaunayMesh extends Mesh {
         var geom:Geometry = new Geometry();
         _subGeometry = new SubGeometry();
         geom.addSubGeometry(_subGeometry);
-        super(geom, material);
         _vectors = vectors;
         _centerMesh = centerMesh;
         _plane = plane;
         _flip = flip;
         _smoothSurface = smoothSurface;
+        super(geom, material);
     }
 
     /**
