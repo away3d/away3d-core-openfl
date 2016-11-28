@@ -88,7 +88,7 @@ class LinearExtrude extends Mesh {
 	 * @param        ignoreSides                [optional] String. To prevent the generation of sides if thickness is set higher than 0. To avoid the bottom ignoreSides = "bottom", avoiding both top and bottom: ignoreSides = "bottom, top". Strings options: bottom, top, left, right, front and back. Default is "".
 	 * @param        flip                            [optional] Boolean. If the faces must be reversed depending on Vector3D's orientation. Default is false.
 	 */
-    public function new(material:MaterialBase = null, vectors:Vector<Vector3D> = null, axis:String = LinearExtrude.Y_AXIS, offset:Float = 10, subdivision:Int = 3, coverAll:Bool = false, thickness:Float = 0, thicknessSubdivision:Int = 3, materials:MultipleMaterials = null, centerMesh:Bool = false, closePath:Bool = false, ignoreSides:String = "", flip:Bool = false) {
+    public function new(material:MaterialBase = null, vectors:Vector<Vector3D> = null, axis:String = LinearExtrude.Y_AXIS, offset:Float = 10, subdivision:Int = 1, coverAll:Bool = false, thickness:Float = 0, thicknessSubdivision:Int = 3, materials:MultipleMaterials = null, centerMesh:Bool = false, closePath:Bool = false, ignoreSides:String = "", flip:Bool = false) {
         LIMIT = 196605;
         EPS = .0001;
         _geomDirty = true;
@@ -176,14 +176,14 @@ class LinearExtrude extends Mesh {
     }
 
     /**
-	 * Defines the subdivisions created in the mesh for the total number of revolutions. Defaults to 2, minimum 2.
+	 * Defines the subdivisions created in the mesh for the total number of revolutions. Defaults to 1, minimum 1.
 	 */
     private function get_subdivision():Int {
         return _subdivision;
     }
 
     private function set_subdivision(val:Int):Int {
-        val = ((val < 3)) ? 3 : val;
+        val = ((val < 1)) ? 1 : val;
         if (_subdivision == val) return val;
         _subdivision = val;
         invalidateGeometry();
