@@ -1,9 +1,17 @@
-#Away3D for OpenFL
+# THIS REPOSITORY HAS NOW MOVED !!!!!!
 
-##Introduction
+## Please take a look at... 
+## http://github.com/openfl/away3d
+## ...for the latest OpenFL implementation of Away3D
+
+==============================================================================
+
+## Away3D for OpenFL
+
+## Introduction
 Away3D for OpenFl is a port of the Flash Away3D engine, enabling targetting Flash, Neko, HTML5 and native CPP builds for OSX, Windows, iOS, Android, etc. 
 
-##Features
+## Features
 - AGLSL conversion of AGAL code to support OpenGLES.
 - Targets cross platform - web, mobile, desktop
 - Texture mapping with mipmapping
@@ -15,11 +23,11 @@ Away3D for OpenFl is a port of the Flash Away3D engine, enabling targetting Flas
 - 3D particle system
 - Line drawing (Segments & SegmentSets)
 
-##Installation
+## Installation
 
     haxelib install away3d
     
-##Getting Started
+## Getting Started
 
     lime create away3d      // To list all of the available examples
     lime create away3d:Basic_View      // To install the Basic_View example
@@ -55,7 +63,7 @@ A typical project.xml file would look as follows. Each example in the away3d-exa
 
     </project>
 
-##Building Examples
+## Building Examples
 To build an example, 'cd' to the example's folder e.g. Basic_View and use the following.
 
 	openfl test <target>     - where target is html5, windows, mac, neko, ios, android, etc
@@ -64,10 +72,10 @@ NOTE: When using OpenFL 3.x and the non-html5 targets, please add the -Dlegacy o
 
 	openfl test mac -Dlegacy
 	
-##Dependencies
+## Dependencies
 Requires OpenFL 3.x & Lime 2.x (ideally OpenFL 3.5.3 & Lime 2.8.3 or later for both).
 
-##License
+## License
 
 Copyright 2014 The Away3D Team
 
