@@ -18,7 +18,6 @@ class PrimitiveBase extends Geometry {
     private var _subGeometry:CompactSubGeometry;
     /**
 	 * Creates a new PrimitiveBase object.
-	 * @param material The material with which to render the object
 	 */
     public function new() {
         super();
